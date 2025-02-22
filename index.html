@@ -27,7 +27,6 @@
             position: relative;
             overflow-x: hidden;
         }
-        /* Dancing burgers background */
         body::before {
             content: '';
             position: fixed;
@@ -47,7 +46,6 @@
             animation: dance 5s infinite ease-in-out;
             opacity: 0.5;
         }
-        /* Randomly position burgers */
         .burger:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
         .burger:nth-child(2) { top: 20%; left: 80%; animation-delay: 1s; }
         .burger:nth-child(3) { top: 40%; left: 30%; animation-delay: 2s; }
@@ -81,7 +79,7 @@
             margin-top: 20px;
             transition: transform 0.2s;
             position: relative;
-            z-index: 1; /* Above burgers */
+            z-index: 1;
         }
         .recipe:hover {
             transform: translateY(-5px);
@@ -159,7 +157,6 @@
     </style>
 </head>
 <body>
-    <!-- Dancing burgers -->
     <div class="burger"></div>
     <div class="burger"></div>
     <div class="burger"></div>
