@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
     <meta charset="UTF-8">
     <title>Daily Dinner Recipe</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"> <!-- Favicon -->
     <style>
+        :root {
+            --bg-color: #e8f5e9; /* Light mode */
+            --text-color: #333;
+            --card-bg: #fff;
+        }
+        body.dark {
+            --bg-color: #263238; /* Dark mode */
+            --text-color: #e0e0e0;
+            --card-bg: #37474f;
+        }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             max-width: 700px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #e8f5e9; /* Soft green instead of harsh white */
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             line-height: 1.6;
+            transition: background-color 0.3s;
         }
         h1 {
             color: #2e7d32;
@@ -24,10 +35,10 @@
             text-align: center;
             font-style: italic;
             color: #666;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         .recipe {
-            background: #fff;
+            background: var(--card-bg);
             padding: 25px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -69,148 +80,123 @@
             position: absolute;
             left: 0;
         }
-        .recipe p.instructions {
+        .recipe p.instructions, .recipe p.tip {
             margin-top: 10px;
         }
         .feedback {
             margin-top: 20px;
             text-align: center;
         }
-        .feedback button {
+        .feedback button, #darkModeToggle, #viewFavorites {
             padding: 10px 20px;
             margin: 0 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 1em;
+            transition: opacity 0.2s, transform 0.2s;
         }
-        .feedback #likeBtn {
-            background-color: #388e3c;
-            color: white;
+        .feedback button:hover:not(:disabled), #darkModeToggle:hover, #viewFavorites:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
         }
-        .feedback #dislikeBtn {
-            background-color: #d32f2f;
-            color: white;
-        }
-        .feedback #changeBtn {
-            background-color: #0288d1;
-            color: white;
-        }
-        .feedback button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        .feedback span {
-            font-size: 0.9em;
-            margin: 0 10px;
-        }
+        .feedback #likeBtn { background-color: #388e3c; color: white; }
+        .feedback #dislikeBtn { background-color: #d32f2f; color: white; }
+        .feedback #changeBtn { background-color: #0288d1; color: white; }
+        .feedback #favoriteBtn { background-color: #f57c00; color: white; }
+        .feedback #shareBtn { background-color: #7b1fa2; color: white; }
+        .feedback button:disabled { background-color: #ccc; cursor: not-allowed; }
+        .feedback span { font-size: 0.9em; margin: 0 10px; }
+        #darkModeToggle { background-color: #455a64; color: white; margin-top: 20px; }
+        #viewFavorites { background-color: #0288d1; color: white; margin-top: 20px; }
+        #proteinFilter { margin: 10px 0; padding: 5px; font-size: 1em; }
         @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            h1 {
-                font-size: 2em;
-            }
-            h2 {
-                font-size: 1.5em;
-            }
-            .recipe {
-                padding: 15px;
-            }
-            .feedback button {
-                padding: 8px 15px;
-                margin: 5px;
-            }
+            body { padding: 10px; }
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.5em; }
+            .recipe { padding: 15px; }
+            .feedback button, #darkModeToggle, #viewFavorites { padding: 8px 15px; margin: 5px; }
         }
     </style>
 </head>
 <body>
     <h1>Daily Dinner Recipe</h1>
     <p class="description">Get a fresh dinner recipe every day—macro-friendly, protein-packed, and under 600 calories, all while keeping your wallet happy and your taste buds satisfied!</p>
+    <select id="proteinFilter">
+        <option value="0">All Recipes</option>
+        <option value="40">40g+ Protein</option>
+    </select>
     <div id="recipe" class="recipe"></div>
+    <button id="darkModeToggle">Toggle Dark Mode</button>
+    <button id="viewFavorites">View Favorites</button>
 
     <script>
         const recipes = [
-            {
-                name: "Chicken & Rice Bowl",
-                calories: 550,
-                protein: 40,
-                ingredients: ["1 chicken breast (~$1.50)", "1/2 cup rice (dry, ~$0.20)", "1 cup broccoli (frozen, ~$0.50)", "Soy sauce (pantry, ~$0.10)"],
-                instructions: "Cook rice. Grill or pan-fry chicken breast with salt/pepper. Steam broccoli. Combine with a splash of soy sauce."
-            },
-            {
-                name: "Lentil & Egg Skillet",
-                calories: 520,
-                protein: 35,
-                ingredients: ["1/2 cup lentils (dry, ~$0.30)", "2 eggs (~$0.40)", "1/2 onion (~$0.25)", "1 tsp spices (pantry, ~$0.05)"],
-                instructions: "Cook lentils in water. Sauté onion, add cooked lentils and spices. Fry eggs and serve on top."
-            },
-            {
-                name: "Turkey & Bean Chili",
-                calories: 580,
-                protein: 45,
-                ingredients: ["1/4 lb ground turkey (~$1.00)", "1/2 can black beans (~$0.50)", "1/2 can diced tomatoes (~$0.60)", "Chili powder (pantry, ~$0.10)"],
-                instructions: "Brown turkey in a pot. Add beans, tomatoes, and chili powder. Simmer 15 mins."
-            },
-            {
-                name: "Tuna & Quinoa Salad",
-                calories: 500,
-                protein: 38,
-                ingredients: ["1 can tuna (~$1.00)", "1/2 cup quinoa (dry, ~$0.50)", "1 cup spinach (~$0.30)", "Lemon juice (pantry, ~$0.10)"],
-                instructions: "Cook quinoa. Drain tuna. Mix with spinach and quinoa, drizzle with lemon juice."
-            },
-            {
-                name: "Pork Stir-Fry",
-                calories: 570,
-                protein: 42,
-                ingredients: ["1/4 lb pork loin (~$1.25)", "1 cup mixed veggies (frozen, ~$0.50)", "1/2 cup rice (dry, ~$0.20)", "Soy sauce (pantry, ~$0.10)"],
-                instructions: "Cook rice. Slice pork thin, stir-fry with veggies. Add soy sauce and serve over rice."
-            },
-            {
-                name: "Egg & Chickpea Scramble",
-                calories: 540,
-                protein: 36,
-                ingredients: ["3 eggs (~$0.60)", "1/2 can chickpeas (~$0.50)", "1/2 bell pepper (~$0.40)", "Salt/pepper (pantry, ~$0.05)"],
-                instructions: "Sauté pepper, add chickpeas. Scramble eggs with the mix, season with salt and pepper."
-            },
-            {
-                name: "Beef & Cabbage Skillet",
-                calories: 590,
-                protein: 44,
-                ingredients: ["1/4 lb ground beef (~$1.50)", "2 cups cabbage (~$0.40)", "1/2 onion (~$0.25)", "Garlic powder (pantry, ~$0.10)"],
-                instructions: "Brown beef with onion. Add cabbage and garlic powder, cook until tender."
-            }
+            { name: "Chicken & Rice Bowl", calories: 550, protein: 40, carbs: 50, fat: 15, ingredients: ["1 chicken breast (~$1.50)", "1/2 cup rice (dry, ~$0.20)", "1 cup broccoli (frozen, ~$0.50)", "Soy sauce (pantry, ~$0.10)"], instructions: "Cook rice. Grill or pan-fry chicken breast with salt/pepper. Steam broccoli. Combine with a splash of soy sauce." },
+            { name: "Lentil & Egg Skillet", calories: 520, protein: 35, carbs: 45, fat: 20, ingredients: ["1/2 cup lentils (dry, ~$0.30)", "2 eggs (~$0.40)", "1/2 onion (~$0.25)", "1 tsp spices (pantry, ~$0.05)"], instructions: "Cook lentils in water. Sauté onion, add cooked lentils and spices. Fry eggs and serve on top." },
+            { name: "Turkey & Bean Chili", calories: 580, protein: 45, carbs: 40, fat: 25, ingredients: ["1/4 lb ground turkey (~$1.00)", "1/2 can black beans (~$0.50)", "1/2 can diced tomatoes (~$0.60)", "Chili powder (pantry, ~$0.10)"], instructions: "Brown turkey in a pot. Add beans, tomatoes, and chili powder. Simmer 15 mins." },
+            { name: "Tuna & Quinoa Salad", calories: 500, protein: 38, carbs: 55, fat: 10, ingredients: ["1 can tuna (~$1.00)", "1/2 cup quinoa (dry, ~$0.50)", "1 cup spinach (~$0.30)", "Lemon juice (pantry, ~$0.10)"], instructions: "Cook quinoa. Drain tuna. Mix with spinach and quinoa, drizzle with lemon juice." },
+            { name: "Pork Stir-Fry", calories: 570, protein: 42, carbs: 45, fat: 20, ingredients: ["1/4 lb pork loin (~$1.25)", "1 cup mixed veggies (frozen, ~$0.50)", "1/2 cup rice (dry, ~$0.20)", "Soy sauce (pantry, ~$0.10)"], instructions: "Cook rice. Slice pork thin, stir-fry with veggies. Add soy sauce and serve over rice." },
+            { name: "Egg & Chickpea Scramble", calories: 540, protein: 36, carbs: 40, fat: 25, ingredients: ["3 eggs (~$0.60)", "1/2 can chickpeas (~$0.50)", "1/2 bell pepper (~$0.40)", "Salt/pepper (pantry, ~$0.05)"], instructions: "Sauté pepper, add chickpeas. Scramble eggs with the mix, season with salt and pepper." },
+            { name: "Beef & Cabbage Skillet", calories: 590, protein: 44, carbs: 15, fat: 35, ingredients: ["1/4 lb ground beef (~$1.50)", "2 cups cabbage (~$0.40)", "1/2 onion (~$0.25)", "Garlic powder (pantry, ~$0.10)"], instructions: "Brown beef with onion. Add cabbage and garlic powder, cook until tender." },
+            { name: "Salmon & Veggie Bake", calories: 560, protein: 41, carbs: 20, fat: 30, ingredients: ["1 salmon fillet (~$2.00)", "1 cup zucchini (~$0.50)", "1/2 lemon (~$0.25)", "Olive oil (pantry, ~$0.10)"], instructions: "Slice zucchini, place with salmon on a tray. Drizzle with oil and lemon juice, bake at 400°F for 20 mins." },
+            { name: "Chicken Lentil Soup", calories: 530, protein: 39, carbs: 45, fat: 15, ingredients: ["1 chicken thigh (~$1.00)", "1/2 cup lentils (dry, ~$0.30)", "1 carrot (~$0.20)", "Spices (pantry, ~$0.10)"], instructions: "Cook lentils and chicken in broth. Add chopped carrot and spices, simmer 30 mins." },
+            { name: "Eggplant & Turkey Bake", calories: 570, protein: 43, carbs: 25, fat: 25, ingredients: ["1/4 lb ground turkey (~$1.00)", "1/2 eggplant (~$0.60)", "1/2 can tomatoes (~$0.60)", "Garlic (pantry, ~$0.10)"], instructions: "Brown turkey, layer with sliced eggplant and tomatoes in a dish. Bake at 375°F for 25 mins." },
+            { name: "Shrimp & Rice", calories: 550, protein: 40, carbs: 50, fat: 15, ingredients: ["1/4 lb shrimp (~$1.50)", "1/2 cup rice (dry, ~$0.20)", "1 cup peas (frozen, ~$0.40)", "Soy sauce (pantry, ~$0.10)"], instructions: "Cook rice. Sauté shrimp and peas, mix with rice and soy sauce." },
+            { name: "Tofu Stir-Fry", calories: 510, protein: 37, carbs: 40, fat: 20, ingredients: ["1/2 block tofu (~$1.00)", "1 cup broccoli (frozen, ~$0.50)", "1/2 bell pepper (~$0.40)", "Soy sauce (pantry, ~$0.10)"], instructions: "Cube tofu, stir-fry with veggies. Add soy sauce and serve." },
+            { name: "Beef & Broccoli", calories: 580, protein: 45, carbs: 20, fat: 30, ingredients: ["1/4 lb beef strips (~$1.75)", "1 cup broccoli (frozen, ~$0.50)", "1/2 onion (~$0.25)", "Soy sauce (pantry, ~$0.10)"], instructions: "Cook beef and onion, add broccoli and soy sauce. Simmer until tender." },
+            { name: "Chickpea & Spinach Curry", calories: 540, protein: 36, carbs: 60, fat: 15, ingredients: ["1 can chickpeas (~$1.00)", "1 cup spinach (~$0.30)", "1/2 can tomatoes (~$0.60)", "Curry powder (pantry, ~$0.10)"], instructions: "Cook chickpeas with tomatoes and curry powder. Add spinach, simmer 10 mins." }
+        ];
+
+        const tips = [
+            "Freeze extra protein to save money.",
+            "Batch cook grains for quick meals.",
+            "Use spices to boost flavor without calories.",
+            "Swap fresh for frozen veggies to cut costs.",
+            "Double the recipe for tomorrow’s lunch."
         ];
 
         function getDailyRecipe() {
             const date = new Date();
             const day = date.getDate();
             let selectedIndex = localStorage.getItem('selectedRecipeIndex');
+            const proteinFilter = parseInt(document.getElementById('proteinFilter').value);
 
-            // If no index or new day, pick based on day
             if (!selectedIndex || localStorage.getItem('lastChangeDate') !== date.toDateString()) {
                 selectedIndex = day % recipes.length;
                 localStorage.setItem('selectedRecipeIndex', selectedIndex);
                 localStorage.setItem('lastChangeDate', date.toDateString());
-                localStorage.setItem('changesLeft', 1); // Reset changes per day
+                localStorage.setItem('changesLeft', 1);
             }
 
-            const recipe = recipes[selectedIndex];
-            const likes = localStorage.getItem(`likes_${recipe.name}`) || 0;
-            const dislikes = localStorage.getItem(`dislikes_${recipe.name}`) || 0;
+            let filteredRecipes = recipes;
+            if (proteinFilter > 0) {
+                filteredRecipes = recipes.filter(r => r.protein >= proteinFilter);
+            }
+            const recipe = filteredRecipes[selectedIndex % filteredRecipes.length];
+            const likes = parseInt(localStorage.getItem(`likes_${recipe.name}`) || 0);
+            const dislikes = parseInt(localStorage.getItem(`dislikes_${recipe.name}`) || 0);
+            const netScore = likes - dislikes;
             const changesLeft = localStorage.getItem('changesLeft') || 0;
+            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            const isFavorite = favorites.includes(recipe.name);
+            const tip = tips[Math.floor(Math.random() * tips.length)];
 
             return `
                 <h2>${recipe.name} - ${date.toDateString()}</h2>
-                <p class="stats">Calories: ${recipe.calories} | Protein: ${recipe.protein}g</p>
+                <p class="stats">Calories: ${recipe.calories} | Protein: ${recipe.protein}g | Carbs: ${recipe.carbs}g | Fat: ${recipe.fat}g</p>
                 <h3>Ingredients</h3>
                 <ul>${recipe.ingredients.map(item => `<li>${item}</li>`).join('')}</ul>
                 <h3>Instructions</h3>
                 <p class="instructions">${recipe.instructions}</p>
+                <p class="tip"><strong>Tip:</strong> ${tip}</p>
                 <div class="feedback">
                     <button id="likeBtn">Like (${likes})</button>
                     <button id="dislikeBtn">Dislike (${dislikes})</button>
+                    <span>Rating: ${netScore}</span>
                     <button id="changeBtn" ${changesLeft <= 0 ? 'disabled' : ''}>New Recipe (${changesLeft} left)</button>
+                    <button id="favoriteBtn">${isFavorite ? 'Unfavorite' : 'Favorite'}</button>
+                    <button id="shareBtn">Share</button>
                 </div>
             `;
         }
@@ -218,7 +204,6 @@
         function updateRecipe() {
             document.getElementById('recipe').innerHTML = getDailyRecipe();
 
-            // Like button
             document.getElementById('likeBtn').addEventListener('click', () => {
                 const recipeName = recipes[localStorage.getItem('selectedRecipeIndex')].name;
                 let likes = parseInt(localStorage.getItem(`likes_${recipeName}`) || 0) + 1;
@@ -226,7 +211,6 @@
                 updateRecipe();
             });
 
-            // Dislike button
             document.getElementById('dislikeBtn').addEventListener('click', () => {
                 const recipeName = recipes[localStorage.getItem('selectedRecipeIndex')].name;
                 let dislikes = parseInt(localStorage.getItem(`dislikes_${recipeName}`) || 0) + 1;
@@ -234,7 +218,6 @@
                 updateRecipe();
             });
 
-            // Change recipe button
             document.getElementById('changeBtn').addEventListener('click', () => {
                 let changesLeft = parseInt(localStorage.getItem('changesLeft') || 0);
                 if (changesLeft > 0) {
@@ -247,9 +230,45 @@
                     updateRecipe();
                 }
             });
+
+            document.getElementById('favoriteBtn').addEventListener('click', () => {
+                const recipeName = recipes[localStorage.getItem('selectedRecipeIndex')].name;
+                let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+                if (favorites.includes(recipeName)) {
+                    favorites = favorites.filter(fav => fav !== recipeName);
+                } else {
+                    favorites.push(recipeName);
+                }
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                updateRecipe();
+            });
+
+            document.getElementById('shareBtn').addEventListener('click', () => {
+                navigator.clipboard.writeText(window.location.href);
+                alert("Link copied to clipboard!");
+            });
         }
 
-        // Initial render
+        document.getElementById('darkModeToggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+        });
+
+        document.getElementById('viewFavorites').addEventListener('click', () => {
+            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            if (favorites.length === 0) {
+                alert("No favorites yet!");
+            } else {
+                alert("Your Favorites:\n" + favorites.join("\n"));
+            }
+        });
+
+        document.getElementById('proteinFilter').addEventListener('change', updateRecipe);
+
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark');
+        }
+
         updateRecipe();
     </script>
 </body>
