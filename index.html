@@ -9,11 +9,13 @@
             --bg-color: #e8f5e9;
             --text-color: #333;
             --card-bg: #fff;
+            --accent-color: #388e3c; /* Green for consistency */
         }
         body.dark {
             --bg-color: #263238;
             --text-color: #e0e0e0;
             --card-bg: #37474f;
+            --accent-color: #66bb6a; /* Lighter green for dark mode */
         }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -24,46 +26,13 @@
             color: var(--text-color);
             line-height: 1.6;
             transition: background-color 0.3s;
-            position: relative;
-            overflow-x: hidden;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-        .burger {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background: url('/burger.gif') no-repeat center;
-            background-size: contain;
-            animation: dance 5s infinite ease-in-out;
-            opacity: 0.5;
-        }
-        .burger:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
-        .burger:nth-child(2) { top: 20%; left: 80%; animation-delay: 1s; }
-        .burger:nth-child(3) { top: 40%; left: 30%; animation-delay: 2s; }
-        .burger:nth-child(4) { top: 60%; left: 70%; animation-delay: 0.5s; }
-        .burger:nth-child(5) { top: 80%; left: 20%; animation-delay: 1.5s; }
-        .burger:nth-child(6) { top: 30%; left: 50%; animation-delay: 3s; }
-        .burger:nth-child(7) { top: 70%; left: 90%; animation-delay: 2.5s; }
-        @keyframes dance {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(10px, -10px) rotate(10deg); }
-            50% { transform: translate(-10px, 10px) rotate(-10deg); }
-            75% { transform: translate(10px, 10px) rotate(5deg); }
         }
         h1 {
             color: #2e7d32;
             text-align: center;
             font-size: 2.5em;
             margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         }
         p.description {
             text-align: center;
@@ -74,31 +43,29 @@
         .recipe {
             background: var(--card-bg);
             padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 12px; /* Softer corners */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Gentler shadow */
             margin-top: 20px;
-            transition: transform 0.2s;
-            position: relative;
-            z-index: 1;
+            transition: transform 0.2s ease;
         }
         .recipe:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px); /* Subtler lift */
         }
         h2 {
             color: #d81b60;
             font-size: 1.8em;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
         .recipe p.stats {
             font-weight: bold;
-            color: #388e3c;
+            color: var(--accent-color);
             margin-bottom: 15px;
         }
         h3 {
             color: #455a64;
             font-size: 1.3em;
             margin-top: 20px;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0; /* Thinner line */
             padding-bottom: 5px;
         }
         ul {
@@ -106,74 +73,122 @@
             padding: 0;
         }
         li {
-            margin: 8px 0;
-            padding-left: 20px;
+            margin: 10px 0;
+            padding-left: 25px;
             position: relative;
         }
         li:before {
             content: "✓";
-            color: #388e3c;
+            color: var(--accent-color);
             position: absolute;
             left: 0;
+            font-size: 1.2em;
         }
         .recipe p.instructions, .recipe p.tip {
             margin-top: 10px;
         }
         .feedback {
-            margin-top: 20px;
+            margin-top: 25px;
             text-align: center;
         }
-        .feedback button, #darkModeToggle, #viewFavorites {
-            padding: 10px 20px;
-            margin: 0 10px;
+        .feedback button, #darkModeToggle, #viewFavorites, #cookingModeBtn, #randomRecipeBtn {
+            padding: 8px 16px;
+            margin: 0 10px; /* More spacing */
             border: none;
-            border-radius: 5px;
+            border-radius: 6px; /* Rounded buttons */
             cursor: pointer;
             font-size: 1em;
-            transition: opacity 0.2s, transform 0.2s;
+            background-color: var(--accent-color); /* Default green */
+            color: white;
+            transition: transform 0.1s ease, opacity 0.1s ease;
         }
-        .feedback button:hover:not(:disabled), #darkModeToggle:hover, #viewFavorites:hover {
+        .feedback button:hover:not(:disabled), #darkModeToggle:hover, #viewFavorites:hover, #cookingModeBtn:hover, #randomRecipeBtn:hover {
             opacity: 0.9;
-            transform: scale(1.05);
+            transform: scale(1.03); /* Minimal pop */
         }
-        .feedback #likeBtn { background-color: #388e3c; color: white; }
-        .feedback #dislikeBtn { background-color: #d32f2f; color: white; }
-        .feedback #changeBtn { background-color: #0288d1; color: white; }
-        .feedback #favoriteBtn { background-color: #f57c00; color: white; }
-        .feedback #shareBtn { background-color: #7b1fa2; color: white; }
+        .feedback #likeBtn { background-color: #388e3c; }
+        .feedback #dislikeBtn { background-color: #d32f2f; }
+        .feedback #changeBtn { background-color: #0288d1; }
+        .feedback #favoriteBtn { background-color: #f57c00; }
+        .feedback #shareBtn { background-color: #7b1fa2; }
         .feedback button:disabled { background-color: #ccc; cursor: not-allowed; }
         .feedback span { font-size: 0.9em; margin: 0 10px; }
-        #darkModeToggle { background-color: #455a64; color: white; margin-top: 20px; }
-        #viewFavorites { background-color: #0288d1; color: white; margin-top: 20px; }
-        #proteinFilter { margin: 10px 0; padding: 5px; font-size: 1em; }
+        #darkModeToggle { background-color: #455a64; margin-top: 20px; }
+        #viewFavorites { background-color: #0288d1; margin-top: 20px; }
+        #cookingModeBtn { background-color: #0288d1; margin-top: 20px; }
+        #randomRecipeBtn { background-color: #7b1fa2; margin-top: 20px; }
+        #proteinFilter, #archive, #proteinGoal {
+            margin: 10px 0;
+            padding: 6px;
+            font-size: 1em;
+            border-radius: 6px; /* Rounded inputs */
+            border: 1px solid #ccc;
+            background-color: var(--card-bg);
+        }
+        #goalProgress { color: var(--accent-color); font-style: italic; margin: 5px 0; }
+        .top-rated { color: gold; margin-left: 10px; }
+        .stats-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent */
+            padding: 5px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #333;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        body.dark .stats-bar {
+            background: rgba(55, 71, 79, 0.9); /* Dark mode adjustment */
+            color: #e0e0e0;
+        }
+        .cooking-mode .recipe {
+            max-width: 1000px;
+            font-size: 1.2em;
+            padding: 40px;
+            margin: 20px auto;
+        }
+        .cooking-mode h2 { font-size: 2.2em; }
+        .cooking-mode p.stats { font-size: 1.1em; }
+        .cooking-mode h3 { font-size: 1.6em; }
+        .cooking-mode li { font-size: 1.1em; margin: 15px 0; }
+        .cooking-mode p.instructions, .cooking-mode p.tip { font-size: 1.1em; }
+        .cooking-mode .feedback, .cooking-mode #darkModeToggle, .cooking-mode #viewFavorites, .cooking-mode #cookingModeBtn { display: none; }
         @media (max-width: 600px) {
-            body { padding: 10px; }
+            body { padding: 15px; }
             h1 { font-size: 2em; }
             h2 { font-size: 1.5em; }
-            .recipe { padding: 15px; }
-            .feedback button, #darkModeToggle, #viewFavorites { padding: 8px 15px; margin: 5px; }
-            .burger { width: 30px; height: 30px; }
+            .recipe { padding: 20px; }
+            .feedback button, #darkModeToggle, #viewFavorites, #cookingModeBtn, #randomRecipeBtn { padding: 6px 12px; margin: 4px; }
+            .stats-bar { font-size: 0.8em; padding: 3px; }
         }
     </style>
 </head>
 <body>
-    <div class="burger"></div>
-    <div class="burger"></div>
-    <div class="burger"></div>
-    <div class="burger"></div>
-    <div class="burger"></div>
-    <div class="burger"></div>
-    <div class="burger"></div>
-
+    <div class="stats-bar" id="statsBar"></div>
     <h1>Daily Dinner Recipe</h1>
     <p class="description">Get a fresh dinner recipe every day—macro-friendly, protein-packed, and under 600 calories, all while keeping your wallet happy and your taste buds satisfied!</p>
     <select id="proteinFilter">
         <option value="0">All Recipes</option>
         <option value="40">40g+ Protein</option>
     </select>
+    <select id="archive">
+        <option value="">Today</option>
+    </select>
+    <input type="number" id="proteinGoal" placeholder="Protein Goal (g)">
+    <p id="goalProgress"></p>
     <div id="recipe" class="recipe"></div>
+    <button id="cookingModeBtn">Cooking Mode</button>
     <button id="darkModeToggle">Toggle Dark Mode</button>
     <button id="viewFavorites">View Favorites</button>
+    <button id="randomRecipeBtn">Random Recipe</button>
+
+    <!-- Audio elements for sound effects -->
+    <audio id="clickSound" src="https://www.myinstants.com/media/sounds/click.mp3"></audio>
+    <audio id="likeSound" src="https://www.myinstants.com/media/sounds/pop.mp3"></audio>
+    <audio id="changeSound" src="https://www.myinstants.com/media/sounds/swoosh.mp3"></audio>
 
     <script>
         const recipes = [
@@ -201,17 +216,21 @@
             "Double the recipe for tomorrow’s lunch."
         ];
 
-        function getDailyRecipe() {
+        function getDailyRecipe(cookingMode = false) {
             const date = new Date();
             const day = date.getDate();
             let selectedIndex = localStorage.getItem('selectedRecipeIndex');
             const proteinFilter = parseInt(document.getElementById('proteinFilter').value);
+            const archive = JSON.parse(localStorage.getItem('recipeArchive') || '[]');
 
             if (!selectedIndex || localStorage.getItem('lastChangeDate') !== date.toDateString()) {
                 selectedIndex = day % recipes.length;
                 localStorage.setItem('selectedRecipeIndex', selectedIndex);
                 localStorage.setItem('lastChangeDate', date.toDateString());
                 localStorage.setItem('changesLeft', 1);
+                if (!archive.includes(selectedIndex)) archive.unshift(selectedIndex);
+                if (archive.length > 7) archive.pop();
+                localStorage.setItem('recipeArchive', JSON.stringify(archive));
             }
 
             let filteredRecipes = recipes;
@@ -226,9 +245,27 @@
             const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
             const isFavorite = favorites.includes(recipe.name);
             const tip = tips[Math.floor(Math.random() * tips.length)];
+            const badge = netScore >= 10 ? '<span class="top-rated">★ Top Rated</span>' : '';
+            const goal = parseInt(document.getElementById('proteinGoal').value) || 0;
+            const progress = goal > 0 ? `Progress: ${recipe.protein}/${goal}g (${Math.round(recipe.protein / goal * 100)}%)` : '';
+
+            document.getElementById('goalProgress').textContent = progress;
+            document.getElementById('statsBar').textContent = `Today’s Totals: ${recipe.calories} cal | ${recipe.protein}g protein | ${recipe.carbs}g carbs | ${recipe.fat}g fat`;
+
+            if (cookingMode) {
+                return `
+                    <h2>${recipe.name} - ${date.toDateString()}</h2>
+                    <p class="stats">Calories: ${recipe.calories} | Protein: ${recipe.protein}g | Carbs: ${recipe.carbs}g | Fat: ${recipe.fat}g</p>
+                    <h3>Ingredients</h3>
+                    <ul>${recipe.ingredients.map(item => `<li>${item}</li>`).join('')}</ul>
+                    <h3>Instructions</h3>
+                    <p class="instructions">${recipe.instructions}</p>
+                    <button id="exitCookingMode">Exit Cooking Mode</button>
+                `;
+            }
 
             return `
-                <h2>${recipe.name} - ${date.toDateString()}</h2>
+                <h2>${recipe.name} - ${date.toDateString()}${badge}</h2>
                 <p class="stats">Calories: ${recipe.calories} | Protein: ${recipe.protein}g | Carbs: ${recipe.carbs}g | Fat: ${recipe.fat}g</p>
                 <h3>Ingredients</h3>
                 <ul>${recipe.ingredients.map(item => `<li>${item}</li>`).join('')}</ul>
@@ -246,10 +283,20 @@
             `;
         }
 
-        function updateRecipe() {
-            document.getElementById('recipe').innerHTML = getDailyRecipe();
+        function updateRecipe(cookingMode = false) {
+            document.getElementById('recipe').innerHTML = getDailyRecipe(cookingMode);
+
+            if (cookingMode) {
+                document.getElementById('exitCookingMode').addEventListener('click', () => {
+                    document.getElementById('clickSound').play();
+                    document.body.classList.remove('cooking-mode');
+                    updateRecipe(false);
+                });
+                return;
+            }
 
             document.getElementById('likeBtn').addEventListener('click', () => {
+                document.getElementById('likeSound').play();
                 const recipeName = recipes[localStorage.getItem('selectedRecipeIndex')].name;
                 let likes = parseInt(localStorage.getItem(`likes_${recipeName}`) || 0) + 1;
                 localStorage.setItem(`likes_${recipeName}`, likes);
@@ -257,6 +304,7 @@
             });
 
             document.getElementById('dislikeBtn').addEventListener('click', () => {
+                document.getElementById('clickSound').play();
                 const recipeName = recipes[localStorage.getItem('selectedRecipeIndex')].name;
                 let dislikes = parseInt(localStorage.getItem(`dislikes_${recipeName}`) || 0) + 1;
                 localStorage.setItem(`dislikes_${recipeName}`, dislikes);
@@ -264,6 +312,7 @@
             });
 
             document.getElementById('changeBtn').addEventListener('click', () => {
+                document.getElementById('changeSound').play();
                 let changesLeft = parseInt(localStorage.getItem('changesLeft') || 0);
                 if (changesLeft > 0) {
                     let newIndex;
@@ -277,6 +326,7 @@
             });
 
             document.getElementById('favoriteBtn').addEventListener('click', () => {
+                document.getElementById('clickSound').play();
                 const recipeName = recipes[localStorage.getItem('selectedRecipeIndex')].name;
                 let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
                 if (favorites.includes(recipeName)) {
@@ -289,17 +339,36 @@
             });
 
             document.getElementById('shareBtn').addEventListener('click', () => {
+                document.getElementById('clickSound').play();
                 navigator.clipboard.writeText(window.location.href);
                 alert("Link copied to clipboard!");
             });
         }
 
+        function updateArchive() {
+            const archive = JSON.parse(localStorage.getItem('recipeArchive') || '[]');
+            const select = document.getElementById('archive');
+            select.innerHTML = '<option value="">Today</option>';
+            archive.forEach((index, i) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.text = `Day ${i + 1} Ago - ${recipes[index].name}`;
+                select.appendChild(option);
+            });
+        }
+
+        document.body.addEventListener('click', () => {
+            document.getElementById('clickSound').play();
+        });
+
         document.getElementById('darkModeToggle').addEventListener('click', () => {
+            document.getElementById('clickSound').play();
             document.body.classList.toggle('dark');
             localStorage.setItem('darkMode', document.body.classList.contains('dark'));
         });
 
         document.getElementById('viewFavorites').addEventListener('click', () => {
+            document.getElementById('clickSound').play();
             const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
             if (favorites.length === 0) {
                 alert("No favorites yet!");
@@ -308,13 +377,48 @@
             }
         });
 
-        document.getElementById('proteinFilter').addEventListener('change', updateRecipe);
+        document.getElementById('cookingModeBtn').addEventListener('click', () => {
+            document.getElementById('clickSound').play();
+            document.body.classList.add('cooking-mode');
+            updateRecipe(true);
+        });
+
+        document.getElementById('randomRecipeBtn').addEventListener('click', () => {
+            document.getElementById('changeSound').play();
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * recipes.length);
+            } while (newIndex == localStorage.getItem('selectedRecipeIndex'));
+            localStorage.setItem('selectedRecipeIndex', newIndex);
+            updateRecipe();
+        });
+
+        document.getElementById('proteinFilter').addEventListener('change', () => {
+            document.getElementById('clickSound').play();
+            updateRecipe();
+        });
+
+        document.getElementById('archive').addEventListener('change', () => {
+            document.getElementById('clickSound').play();
+            if (document.getElementById('archive').value) {
+                localStorage.setItem('selectedRecipeIndex', document.getElementById('archive').value);
+            } else {
+                localStorage.removeItem('selectedRecipeIndex'); // Reset to today
+            }
+            updateRecipe();
+        });
+
+        document.getElementById('proteinGoal').addEventListener('input', () => {
+            document.getElementById('clickSound').play();
+            updateRecipe();
+        });
 
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark');
         }
 
         updateRecipe();
+        updateArchive();
     </script>
 </body>
 </html>
