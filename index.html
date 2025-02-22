@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Daily Dinner Recipe</title>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico"> <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <style>
         :root {
-            --bg-color: #e8f5e9; /* Light mode */
+            --bg-color: #e8f5e9;
             --text-color: #333;
             --card-bg: #fff;
         }
         body.dark {
-            --bg-color: #263238; /* Dark mode */
+            --bg-color: #263238;
             --text-color: #e0e0e0;
             --card-bg: #37474f;
         }
@@ -24,6 +24,42 @@
             color: var(--text-color);
             line-height: 1.6;
             transition: background-color 0.3s;
+            position: relative;
+            overflow-x: hidden;
+        }
+        /* Dancing burgers background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .burger {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: url('/burger.gif') no-repeat center;
+            background-size: contain;
+            animation: dance 5s infinite ease-in-out;
+            opacity: 0.5;
+        }
+        /* Randomly position burgers */
+        .burger:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .burger:nth-child(2) { top: 20%; left: 80%; animation-delay: 1s; }
+        .burger:nth-child(3) { top: 40%; left: 30%; animation-delay: 2s; }
+        .burger:nth-child(4) { top: 60%; left: 70%; animation-delay: 0.5s; }
+        .burger:nth-child(5) { top: 80%; left: 20%; animation-delay: 1.5s; }
+        .burger:nth-child(6) { top: 30%; left: 50%; animation-delay: 3s; }
+        .burger:nth-child(7) { top: 70%; left: 90%; animation-delay: 2.5s; }
+        @keyframes dance {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(10px, -10px) rotate(10deg); }
+            50% { transform: translate(-10px, 10px) rotate(-10deg); }
+            75% { transform: translate(10px, 10px) rotate(5deg); }
         }
         h1 {
             color: #2e7d32;
@@ -44,6 +80,8 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
             transition: transform 0.2s;
+            position: relative;
+            z-index: 1; /* Above burgers */
         }
         .recipe:hover {
             transform: translateY(-5px);
@@ -116,10 +154,20 @@
             h2 { font-size: 1.5em; }
             .recipe { padding: 15px; }
             .feedback button, #darkModeToggle, #viewFavorites { padding: 8px 15px; margin: 5px; }
+            .burger { width: 30px; height: 30px; }
         }
     </style>
 </head>
 <body>
+    <!-- Dancing burgers -->
+    <div class="burger"></div>
+    <div class="burger"></div>
+    <div class="burger"></div>
+    <div class="burger"></div>
+    <div class="burger"></div>
+    <div class="burger"></div>
+    <div class="burger"></div>
+
     <h1>Daily Dinner Recipe</h1>
     <p class="description">Get a fresh dinner recipe every day—macro-friendly, protein-packed, and under 600 calories, all while keeping your wallet happy and your taste buds satisfied!</p>
     <select id="proteinFilter">
