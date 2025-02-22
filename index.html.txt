@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Dinner Recipe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .recipe {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        h2 { color: #333; }
+        ul { list-style-type: none; padding: 0; }
+    </style>
+</head>
+<body>
+    <h1>Daily Dinner Recipe</h1>
+    <div id="recipe" class="recipe"></div>
+
+    <script>
+        // Sample recipes (cost-effective, high-protein, <600 cal)
+        const recipes = [
+            {
+                name: "Chicken & Rice Bowl",
+                calories: 550,
+                protein: 40, // grams
+                ingredients: [
+                    "1 chicken breast (~$1.50)",
+                    "1/2 cup rice (dry, ~$0.20)",
+                    "1 cup broccoli (frozen, ~$0.50)",
+                    "Soy sauce (pantry, ~$0.10)"
+                ],
+                instructions: "Cook rice. Grill or pan-fry chicken breast with salt/pepper. Steam broccoli. Combine with a splash of soy sauce."
+            },
+            {
+                name: "Lentil & Egg Skillet",
+                calories: 520,
+                protein: 35,
+                ingredients: [
+                    "1/2 cup lentils (dry, ~$0.30)",
+                    "2 eggs (~$0.40)",
+                    "1/2 onion (~$0.25)",
+                    "1 tsp spices (pantry, ~$0.05)"
+                ],
+                instructions: "Cook lentils in water. Sauté onion, add cooked lentils and spices. Fry eggs and serve on top."
+            },
+            {
+                name: "Turkey & Bean Chili",
+                calories: 580,
+                protein: 45,
+                ingredients: [
+                    "1/4 lb ground turkey (~$1.00)",
+                    "1/2 can black beans (~$0.50)",
+                    "1/2 can diced tomatoes (~$0.60)",
+                    "Chili powder (pantry, ~$0.10)"
+                ],
+                instructions: "Brown turkey in a pot. Add beans, tomatoes, and chili powder. Simmer 15 mins."
+            }
+        ];
+
+        function getDailyRecipe() {
+            const date = new Date();
+            const day = date.getDate();
+            const recipe = recipes[day % recipes.length]; // Rotates through recipes
+
+            return `
+                <h2>${recipe.name} - ${date.toDateString()}</h2>
+                <p><strong>Calories:</strong> ${recipe.calories} | <strong>Protein:</strong> ${recipe.protein}g</p>
+                <h3>Ingredients:</h3>
+                <ul>${recipe.ingredients.map(item => `<li>${item}</li>`).join('')}</ul>
+                <h3>Instructions:</h3>
+                <p>${recipe.instructions}</p>
+            `;
+        }
+
+        document.getElementById('recipe').innerHTML = getDailyRecipe();
+    </script>
+</body>
+</html>
