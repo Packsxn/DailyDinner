@@ -9,12 +9,12 @@
             max-width: 700px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f4f4f4;
+            background-color: #e8f5e9; /* Soft green instead of harsh white */
             color: #333;
             line-height: 1.6;
         }
         h1 {
-            color: #2e7d32; /* Forest green */
+            color: #2e7d32;
             text-align: center;
             font-size: 2.5em;
             margin-bottom: 10px;
@@ -34,20 +34,20 @@
             transition: transform 0.2s;
         }
         .recipe:hover {
-            transform: translateY(-5px); /* Subtle lift on hover */
+            transform: translateY(-5px);
         }
         h2 {
-            color: #d81b60; /* Magenta for recipe title */
+            color: #d81b60;
             font-size: 1.8em;
             margin-bottom: 10px;
         }
         .recipe p.stats {
             font-weight: bold;
-            color: #388e3c; /* Green for stats */
+            color: #388e3c;
             margin-bottom: 15px;
         }
         h3 {
-            color: #455a64; /* Slate gray */
+            color: #455a64;
             font-size: 1.3em;
             margin-top: 20px;
             border-bottom: 2px solid #e0e0e0;
@@ -71,7 +71,38 @@
         .recipe p.instructions {
             margin-top: 10px;
         }
-        /* Mobile responsiveness */
+        .feedback {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .feedback button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .feedback #likeBtn {
+            background-color: #388e3c;
+            color: white;
+        }
+        .feedback #dislikeBtn {
+            background-color: #d32f2f;
+            color: white;
+        }
+        .feedback #changeBtn {
+            background-color: #0288d1;
+            color: white;
+        }
+        .feedback button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .feedback span {
+            font-size: 0.9em;
+            margin: 0 10px;
+        }
         @media (max-width: 600px) {
             body {
                 padding: 10px;
@@ -84,6 +115,10 @@
             }
             .recipe {
                 padding: 15px;
+            }
+            .feedback button {
+                padding: 8px 15px;
+                margin: 5px;
             }
         }
     </style>
@@ -99,84 +134,49 @@
                 name: "Chicken & Rice Bowl",
                 calories: 550,
                 protein: 40,
-                ingredients: [
-                    "1 chicken breast (~$1.50)",
-                    "1/2 cup rice (dry, ~$0.20)",
-                    "1 cup broccoli (frozen, ~$0.50)",
-                    "Soy sauce (pantry, ~$0.10)"
-                ],
+                ingredients: ["1 chicken breast (~$1.50)", "1/2 cup rice (dry, ~$0.20)", "1 cup broccoli (frozen, ~$0.50)", "Soy sauce (pantry, ~$0.10)"],
                 instructions: "Cook rice. Grill or pan-fry chicken breast with salt/pepper. Steam broccoli. Combine with a splash of soy sauce."
             },
             {
                 name: "Lentil & Egg Skillet",
                 calories: 520,
                 protein: 35,
-                ingredients: [
-                    "1/2 cup lentils (dry, ~$0.30)",
-                    "2 eggs (~$0.40)",
-                    "1/2 onion (~$0.25)",
-                    "1 tsp spices (pantry, ~$0.05)"
-                ],
+                ingredients: ["1/2 cup lentils (dry, ~$0.30)", "2 eggs (~$0.40)", "1/2 onion (~$0.25)", "1 tsp spices (pantry, ~$0.05)"],
                 instructions: "Cook lentils in water. Sauté onion, add cooked lentils and spices. Fry eggs and serve on top."
             },
             {
                 name: "Turkey & Bean Chili",
                 calories: 580,
                 protein: 45,
-                ingredients: [
-                    "1/4 lb ground turkey (~$1.00)",
-                    "1/2 can black beans (~$0.50)",
-                    "1/2 can diced tomatoes (~$0.60)",
-                    "Chili powder (pantry, ~$0.10)"
-                ],
+                ingredients: ["1/4 lb ground turkey (~$1.00)", "1/2 can black beans (~$0.50)", "1/2 can diced tomatoes (~$0.60)", "Chili powder (pantry, ~$0.10)"],
                 instructions: "Brown turkey in a pot. Add beans, tomatoes, and chili powder. Simmer 15 mins."
             },
             {
                 name: "Tuna & Quinoa Salad",
                 calories: 500,
                 protein: 38,
-                ingredients: [
-                    "1 can tuna (~$1.00)",
-                    "1/2 cup quinoa (dry, ~$0.50)",
-                    "1 cup spinach (~$0.30)",
-                    "Lemon juice (pantry, ~$0.10)"
-                ],
+                ingredients: ["1 can tuna (~$1.00)", "1/2 cup quinoa (dry, ~$0.50)", "1 cup spinach (~$0.30)", "Lemon juice (pantry, ~$0.10)"],
                 instructions: "Cook quinoa. Drain tuna. Mix with spinach and quinoa, drizzle with lemon juice."
             },
             {
                 name: "Pork Stir-Fry",
                 calories: 570,
                 protein: 42,
-                ingredients: [
-                    "1/4 lb pork loin (~$1.25)",
-                    "1 cup mixed veggies (frozen, ~$0.50)",
-                    "1/2 cup rice (dry, ~$0.20)",
-                    "Soy sauce (pantry, ~$0.10)"
-                ],
+                ingredients: ["1/4 lb pork loin (~$1.25)", "1 cup mixed veggies (frozen, ~$0.50)", "1/2 cup rice (dry, ~$0.20)", "Soy sauce (pantry, ~$0.10)"],
                 instructions: "Cook rice. Slice pork thin, stir-fry with veggies. Add soy sauce and serve over rice."
             },
             {
                 name: "Egg & Chickpea Scramble",
                 calories: 540,
                 protein: 36,
-                ingredients: [
-                    "3 eggs (~$0.60)",
-                    "1/2 can chickpeas (~$0.50)",
-                    "1/2 bell pepper (~$0.40)",
-                    "Salt/pepper (pantry, ~$0.05)"
-                ],
+                ingredients: ["3 eggs (~$0.60)", "1/2 can chickpeas (~$0.50)", "1/2 bell pepper (~$0.40)", "Salt/pepper (pantry, ~$0.05)"],
                 instructions: "Sauté pepper, add chickpeas. Scramble eggs with the mix, season with salt and pepper."
             },
             {
                 name: "Beef & Cabbage Skillet",
                 calories: 590,
                 protein: 44,
-                ingredients: [
-                    "1/4 lb ground beef (~$1.50)",
-                    "2 cups cabbage (~$0.40)",
-                    "1/2 onion (~$0.25)",
-                    "Garlic powder (pantry, ~$0.10)"
-                ],
+                ingredients: ["1/4 lb ground beef (~$1.50)", "2 cups cabbage (~$0.40)", "1/2 onion (~$0.25)", "Garlic powder (pantry, ~$0.10)"],
                 instructions: "Brown beef with onion. Add cabbage and garlic powder, cook until tender."
             }
         ];
@@ -184,7 +184,20 @@
         function getDailyRecipe() {
             const date = new Date();
             const day = date.getDate();
-            const recipe = recipes[day % recipes.length];
+            let selectedIndex = localStorage.getItem('selectedRecipeIndex');
+
+            // If no index or new day, pick based on day
+            if (!selectedIndex || localStorage.getItem('lastChangeDate') !== date.toDateString()) {
+                selectedIndex = day % recipes.length;
+                localStorage.setItem('selectedRecipeIndex', selectedIndex);
+                localStorage.setItem('lastChangeDate', date.toDateString());
+                localStorage.setItem('changesLeft', 1); // Reset changes per day
+            }
+
+            const recipe = recipes[selectedIndex];
+            const likes = localStorage.getItem(`likes_${recipe.name}`) || 0;
+            const dislikes = localStorage.getItem(`dislikes_${recipe.name}`) || 0;
+            const changesLeft = localStorage.getItem('changesLeft') || 0;
 
             return `
                 <h2>${recipe.name} - ${date.toDateString()}</h2>
@@ -193,10 +206,50 @@
                 <ul>${recipe.ingredients.map(item => `<li>${item}</li>`).join('')}</ul>
                 <h3>Instructions</h3>
                 <p class="instructions">${recipe.instructions}</p>
+                <div class="feedback">
+                    <button id="likeBtn">Like (${likes})</button>
+                    <button id="dislikeBtn">Dislike (${dislikes})</button>
+                    <button id="changeBtn" ${changesLeft <= 0 ? 'disabled' : ''}>New Recipe (${changesLeft} left)</button>
+                </div>
             `;
         }
 
-        document.getElementById('recipe').innerHTML = getDailyRecipe();
+        function updateRecipe() {
+            document.getElementById('recipe').innerHTML = getDailyRecipe();
+
+            // Like button
+            document.getElementById('likeBtn').addEventListener('click', () => {
+                const recipeName = recipes[localStorage.getItem('selectedRecipeIndex')].name;
+                let likes = parseInt(localStorage.getItem(`likes_${recipeName}`) || 0) + 1;
+                localStorage.setItem(`likes_${recipeName}`, likes);
+                updateRecipe();
+            });
+
+            // Dislike button
+            document.getElementById('dislikeBtn').addEventListener('click', () => {
+                const recipeName = recipes[localStorage.getItem('selectedRecipeIndex')].name;
+                let dislikes = parseInt(localStorage.getItem(`dislikes_${recipeName}`) || 0) + 1;
+                localStorage.setItem(`dislikes_${recipeName}`, dislikes);
+                updateRecipe();
+            });
+
+            // Change recipe button
+            document.getElementById('changeBtn').addEventListener('click', () => {
+                let changesLeft = parseInt(localStorage.getItem('changesLeft') || 0);
+                if (changesLeft > 0) {
+                    let newIndex;
+                    do {
+                        newIndex = Math.floor(Math.random() * recipes.length);
+                    } while (newIndex == localStorage.getItem('selectedRecipeIndex'));
+                    localStorage.setItem('selectedRecipeIndex', newIndex);
+                    localStorage.setItem('changesLeft', changesLeft - 1);
+                    updateRecipe();
+                }
+            });
+        }
+
+        // Initial render
+        updateRecipe();
     </script>
 </body>
 </html>
