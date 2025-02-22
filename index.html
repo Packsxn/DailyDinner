@@ -5,34 +5,100 @@
     <title>Daily Dinner Recipe</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 20px auto;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 700px;
+            margin: 0 auto;
             padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #2e7d32; /* Forest green */
             text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        p.description {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-bottom: 30px;
         }
         .recipe {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 5px;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
-            text-align: left;
+            transition: transform 0.2s;
         }
-        h2 { color: #333; }
-        ul { list-style-type: none; padding: 0; }
+        .recipe:hover {
+            transform: translateY(-5px); /* Subtle lift on hover */
+        }
+        h2 {
+            color: #d81b60; /* Magenta for recipe title */
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        .recipe p.stats {
+            font-weight: bold;
+            color: #388e3c; /* Green for stats */
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #455a64; /* Slate gray */
+            font-size: 1.3em;
+            margin-top: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 5px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        li:before {
+            content: "✓";
+            color: #388e3c;
+            position: absolute;
+            left: 0;
+        }
+        .recipe p.instructions {
+            margin-top: 10px;
+        }
+        /* Mobile responsiveness */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            .recipe {
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
     <h1>Daily Dinner Recipe</h1>
+    <p class="description">Get a fresh dinner recipe every day—macro-friendly, protein-packed, and under 600 calories, all while keeping your wallet happy and your taste buds satisfied!</p>
     <div id="recipe" class="recipe"></div>
 
     <script>
-        // Sample recipes (cost-effective, high-protein, <600 cal)
         const recipes = [
             {
                 name: "Chicken & Rice Bowl",
                 calories: 550,
-                protein: 40, // grams
+                protein: 40,
                 ingredients: [
                     "1 chicken breast (~$1.50)",
                     "1/2 cup rice (dry, ~$0.20)",
@@ -64,21 +130,69 @@
                     "Chili powder (pantry, ~$0.10)"
                 ],
                 instructions: "Brown turkey in a pot. Add beans, tomatoes, and chili powder. Simmer 15 mins."
+            },
+            {
+                name: "Tuna & Quinoa Salad",
+                calories: 500,
+                protein: 38,
+                ingredients: [
+                    "1 can tuna (~$1.00)",
+                    "1/2 cup quinoa (dry, ~$0.50)",
+                    "1 cup spinach (~$0.30)",
+                    "Lemon juice (pantry, ~$0.10)"
+                ],
+                instructions: "Cook quinoa. Drain tuna. Mix with spinach and quinoa, drizzle with lemon juice."
+            },
+            {
+                name: "Pork Stir-Fry",
+                calories: 570,
+                protein: 42,
+                ingredients: [
+                    "1/4 lb pork loin (~$1.25)",
+                    "1 cup mixed veggies (frozen, ~$0.50)",
+                    "1/2 cup rice (dry, ~$0.20)",
+                    "Soy sauce (pantry, ~$0.10)"
+                ],
+                instructions: "Cook rice. Slice pork thin, stir-fry with veggies. Add soy sauce and serve over rice."
+            },
+            {
+                name: "Egg & Chickpea Scramble",
+                calories: 540,
+                protein: 36,
+                ingredients: [
+                    "3 eggs (~$0.60)",
+                    "1/2 can chickpeas (~$0.50)",
+                    "1/2 bell pepper (~$0.40)",
+                    "Salt/pepper (pantry, ~$0.05)"
+                ],
+                instructions: "Sauté pepper, add chickpeas. Scramble eggs with the mix, season with salt and pepper."
+            },
+            {
+                name: "Beef & Cabbage Skillet",
+                calories: 590,
+                protein: 44,
+                ingredients: [
+                    "1/4 lb ground beef (~$1.50)",
+                    "2 cups cabbage (~$0.40)",
+                    "1/2 onion (~$0.25)",
+                    "Garlic powder (pantry, ~$0.10)"
+                ],
+                instructions: "Brown beef with onion. Add cabbage and garlic powder, cook until tender."
             }
         ];
 
         function getDailyRecipe() {
             const date = new Date();
             const day = date.getDate();
-            const recipe = recipes[day % recipes.length]; // Rotates through recipes
+            const recipe = recipes[day % recipes.length];
 
             return `
                 <h2>${recipe.name} - ${date.toDateString()}</h2>
-                <p><strong>Calories:</strong> ${recipe.calories} | <strong>Protein:</strong> ${recipe.protein}g</p>
-                <h3>Ingredients:</h3>
+                <p class="stats">Calories: ${recipe.calories} | Protein: ${recipe.protein}g</p>
+                <h3>Ingredients</h3>
                 <ul>${recipe.ingredients.map(item => `<li>${item}</li>`).join('')}</ul>
-                <h3>Instructions:</h3>
-                <p>${recipe.instructions}</p>
+                <h3>Instructions</h3>
+                <p class="instructions">${recipe.instructions}</p>
             `;
         }
 
